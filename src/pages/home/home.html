@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-navbar class="bg-dark">
+    <ion-title id="title" class="text-center">ToDo List</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+    <ion-label>New Task :</ion-label>
+    <ion-input type="text" [(ngModel)]="newTask"></ion-input>
+  </ion-item>
+  
+  <ion-list radio-group [(ngModel)]="priority">
+      <ion-list-header>
+        Priority :
+      </ion-list-header>
+      <ion-item>
+        <ion-label>High-Priority</ion-label>
+        <ion-radio checked="true" value="high"></ion-radio>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label>Medium-Priority</ion-label>
+        <ion-radio value="medium"></ion-radio>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label>Low-Priority</ion-label>
+        <ion-radio value="low"></ion-radio>
+      </ion-item>
+    </ion-list>
+    <div class="d-flex flex-row justify-content-center">
+      <button ion-button id="add" (click)="add()">Add</button>
+    </div>
+    <div class="text-center mt-1"><h6>Total Tasks : {{total}}<br>Pending Tasks : {{pending}}/{{total}}</h6></div>
+
+    <table width="100%" class="table table-bordered text-center mt-2">
+        <thead class="thead-dark">
+          <tr>
+            <th>Task</th>
+            <th>Date</th>
+            <th>Edit</th>
+            <th>Remove</th>
+          </tr>
+        </thead>
+        <tr *ngFor="let item of listItem; let i=index" [ngClass]="{'h-green':item.priority=='high'&&item.status=='done','m-green':item.priority=='medium'&&item.status=='done','l-green':item.priority=='low'&&item.status=='done','h-red':item.priority=='high'&&item.status=='pending','m-red':item.priority=='medium'&&item.status=='pending','l-red':item.priority=='low'&&item.status=='pending'}" style="align-content: center" class="fadeIn animated" (click)="updateStatus(item)">
+          <td>{{item.task}}</td>
+          <td>{{item.date.toLocaleString()}}</td>
+          <td><button type="button" class="btn btn-secondary" (click)="edit(item)">Edit</button></td>
+          <td><button type="button" class="btn btn-danger" (click)="remove(i)">Remove</button></td>
+        </tr>
+        
+      </table>
+</ion-content>
