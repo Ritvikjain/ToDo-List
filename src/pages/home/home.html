@@ -43,11 +43,11 @@
             <th>Remove</th>
           </tr>
         </thead>
-        <tr *ngFor="let item of listItem; let i=index" [ngClass]="{'h-green':item.priority=='high'&&item.status=='done','m-green':item.priority=='medium'&&item.status=='done','l-green':item.priority=='low'&&item.status=='done','h-red':item.priority=='high'&&item.status=='pending','m-red':item.priority=='medium'&&item.status=='pending','l-red':item.priority=='low'&&item.status=='pending'}" style="align-content: center" class="fadeIn animated" (click)="updateStatus(item)">
+        <tr *ngFor="let item of list; let i=index" [ngClass]="{'h-green':item.priority=='high'&&item.status=='done','m-green':item.priority=='medium'&&item.status=='done','l-green':item.priority=='low'&&item.status=='done','h-red':item.priority=='high'&&item.status=='pending','m-red':item.priority=='medium'&&item.status=='pending','l-red':item.priority=='low'&&item.status=='pending'}" style="align-content: center" class="fadeIn animated">
           <td>{{item.task}}</td>
           <td>{{item.date.toLocaleString()}}</td>
           <td><button type="button" class="btn btn-secondary" (click)="edit(item)">Edit</button></td>
-          <td><button type="button" class="btn btn-danger" (click)="remove(i)">Remove</button></td>
+          <td><button type="button" class="btn btn-danger" (click)="remove(item, i)">Remove</button></td>
         </tr>
         
       </table>
