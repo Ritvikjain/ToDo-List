@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, App  } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs/Observable';
+import { AuthProvider } from '../../providers/auth/auth';
+import { LoginPage } from '../login/login';
 
 export interface List{
   _ref: string,
@@ -19,7 +21,7 @@ export interface List{
 export class HomePage {
   list_collection: AngularFirestoreCollection;
   list: List[] = [];
-  newTask
+  newTask;
   status;
   priority;
   pending = 0;
@@ -27,8 +29,8 @@ export class HomePage {
   listItem=[];
   total;
 
-  constructor( private afs: AngularFirestore,public navCtrl: NavController,public alertCtrl: AlertController) {
-    this.list_collection = afs.collection<any>('todo_list');
+  constructor( private afs: AngularFirestore,public navCtrl: NavController,public alertCtrl: AlertController, private auth: AuthProvider, private app: App) {
+    this.list_collection = afs.collection<any>(auth.user.email);
     this.list_collection.valueChanges().subscribe(data => {
       this.list = data.map(res => res as List);
       this.total=this.list.length;
@@ -129,6 +131,12 @@ export class HomePage {
       this.list_collection.doc(item._ref).update({status: "pending"});
       this.pending++;
     }
+  }
+
+  logout(){
+    this.auth.signOut().then(item => {
+      this.app.getRootNav().setRoot(LoginPage);
+    });
   }
 
 

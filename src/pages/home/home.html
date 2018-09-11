@@ -49,6 +49,8 @@
           <td><button type="button" class="btn btn-secondary" (click)="edit(item)">Edit</button></td>
           <td><button type="button" class="btn btn-danger" (click)="remove(item, i)">Remove</button></td>
         </tr>
-        
       </table>
+      <ion-fab right bottom>
+        <button ion-fab color="secondary" (click)="logout()"><ion-icon name="ios-log-out-outline"></ion-icon></button>
+      </ion-fab>
 </ion-content>
