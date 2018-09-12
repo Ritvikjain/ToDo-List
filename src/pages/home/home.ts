@@ -28,6 +28,7 @@ export class HomePage {
   item;
   listItem=[];
   total;
+  listview = "todo";
 
   constructor( private afs: AngularFirestore,public navCtrl: NavController,public alertCtrl: AlertController, private auth: AuthProvider, private app: App) {
     this.list_collection = afs.collection<any>(auth.user.email);

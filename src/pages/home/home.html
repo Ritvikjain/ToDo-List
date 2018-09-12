@@ -11,46 +11,85 @@
   </ion-item>
   
   <ion-list radio-group [(ngModel)]="priority">
-      <ion-list-header>
-        Priority :
-      </ion-list-header>
-      <ion-item>
-        <ion-label>High-Priority</ion-label>
-        <ion-radio checked="true" value="high"></ion-radio>
-      </ion-item>
-    
-      <ion-item>
-        <ion-label>Medium-Priority</ion-label>
-        <ion-radio value="medium"></ion-radio>
-      </ion-item>
-    
-      <ion-item>
-        <ion-label>Low-Priority</ion-label>
-        <ion-radio value="low"></ion-radio>
+    <ion-list-header>
+      Priority :
+    </ion-list-header>
+    <ion-item>
+      <ion-label>High-Priority</ion-label>
+      <ion-radio checked="true" value="high"></ion-radio>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label>Medium-Priority</ion-label>
+      <ion-radio value="medium"></ion-radio>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label>Low-Priority</ion-label>
+      <ion-radio value="low"></ion-radio>
+    </ion-item>
+  </ion-list>
+  <div class="d-flex flex-row justify-content-center">
+    <button ion-button id="add" (click)="add()">Add</button>
+  </div>
+  <!--div class="text-center mt-1"><h6>Total Tasks : {{total}}<br>Pending Tasks : {{pending}}/{{total}}</h6></div-->
+  <ion-segment [(ngModel)]="listview" color="primary">
+    <ion-segment-button selected value="todo">
+      ToDo
+    </ion-segment-button>
+    <ion-segment-button value="done">
+      Done
+    </ion-segment-button>
+  </ion-segment>
+  <div [ngSwitch]="listview" padding-top>
+    <div *ngSwitchCase="'todo'">
+      <ion-list *ngFor="let item of list;let i=index">
+        <ion-item-sliding *ngIf="(item.status=='pending')">
+          <ion-item [ngClass]="{'h-green':item.priority=='high'&&item.status=='done','m-green':item.priority=='medium'&&item.status=='done','l-green':item.priority=='low'&&item.status=='done','h-red':item.priority=='high'&&item.status=='pending','m-red':item.priority=='medium'&&item.status=='pending','l-red':item.priority=='low'&&item.status=='pending'}">
+            <h2>{{item.task}}</h2>
+            <p>{{item.date}}</p>
+          </ion-item>
+          <ion-item-options side="right">
+            <button ion-button color="danger" (click)="remove(item,i)">
+              <ion-icon name="trash"></ion-icon>
+              Delete
+            </button>
+            <button ion-button color="light" (click)="edit(item)">
+              <ion-icon name="ios-hammer-outline"></ion-icon>
+              Edit
+            </button>
+            <button ion-button color="secondary" (click)="updateStatus(item)">
+              <ion-icon name="done-all"></ion-icon>
+              Done
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+    </div>
+    <div *ngSwitchCase="'done'">
+    <ion-list *ngFor="let item of list">
+      <ion-item *ngIf="item.status=='done'" [ngClass]="{'h-green':item.priority=='high'&&item.status=='done','m-green':item.priority=='medium'&&item.status=='done','l-green':item.priority=='low'&&item.status=='done','h-red':item.priority=='high'&&item.status=='pending','m-red':item.priority=='medium'&&item.status=='pending','l-red':item.priority=='low'&&item.status=='pending'}">
+        <h2>{{item.task}}</h2>
+        <h3>{{item.date}}</h3>
+        <!--p>{{task.completed_on.toLocaleString()}}</p-->
       </ion-item>
     </ion-list>
-    <div class="d-flex flex-row justify-content-center">
-      <button ion-button id="add" (click)="add()">Add</button>
     </div>
-    <div class="text-center mt-1"><h6>Total Tasks : {{total}}<br>Pending Tasks : {{pending}}/{{total}}</h6></div>
-
-    <table width="100%" class="table table-bordered text-center mt-2">
-        <thead class="thead-dark">
-          <tr>
-            <th>Task</th>
-            <th>Date</th>
-            <th>Edit</th>
-            <th>Remove</th>
-          </tr>
-        </thead>
-        <tr *ngFor="let item of list; let i=index" [ngClass]="{'h-green':item.priority=='high'&&item.status=='done','m-green':item.priority=='medium'&&item.status=='done','l-green':item.priority=='low'&&item.status=='done','h-red':item.priority=='high'&&item.status=='pending','m-red':item.priority=='medium'&&item.status=='pending','l-red':item.priority=='low'&&item.status=='pending'}" style="align-content: center" class="fadeIn animated">
-          <td>{{item.task}}</td>
-          <td>{{item.date.toLocaleString()}}</td>
-          <td><button type="button" class="btn btn-secondary" (click)="edit(item)">Edit</button></td>
-          <td><button type="button" class="btn btn-danger" (click)="remove(item, i)">Remove</button></td>
-        </tr>
-      </table>
-      <ion-fab right bottom>
-        <button ion-fab color="secondary" (click)="logout()"><ion-icon name="ios-log-out-outline"></ion-icon></button>
-      </ion-fab>
+  </div>
+  <!--table width="100%" class="table table-bordered text-center mt-2">
+    <thead class="thead-dark">
+      <tr>
+        <th>Task</th>
+        <th>Date</th>
+        <th>Edit</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tr *ngFor="let item of list; let i=index" [ngClass]="{'h-green':item.priority=='high'&&item.status=='done','m-green':item.priority=='medium'&&item.status=='done','l-green':item.priority=='low'&&item.status=='done','h-red':item.priority=='high'&&item.status=='pending','m-red':item.priority=='medium'&&item.status=='pending','l-red':item.priority=='low'&&item.status=='pending'}" style="align-content: center" class="fadeIn animated">
+      <td>{{item.task}}</td>
+      <td>{{item.date.toLocaleString()}}</td>
+      <td><button type="button" class="btn btn-secondary" (click)="edit(item)">Edit</button></td>
+      <td><button type="button" class="btn btn-danger" (click)="remove(item, i)">Remove</button></td>
+    </tr>
+  </table-->
 </ion-content>

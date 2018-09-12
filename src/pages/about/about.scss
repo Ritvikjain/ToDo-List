@@ -1,3 +1,30 @@
-page-about {
+page-info {
+    h1{
+        text-align: center;
+        top: 40% !important;
+        position: relative !important;
+    }
+}
+.border {
+    border-color: white;
+    
+   
+    border-radius: 60%;
+  }
 
+  .smaller-image {
+    width: 100px;
+    
+  }
+.space{
+    height: 25%; 
+    background-color: #488aff;
+}
+
+.img{
+    border-width: 50px;
+    border-style: solid;
+    border-radius: 50%;
+    height:150px;
+    border: 10px solid white;
 }
