@@ -45,4 +45,10 @@ export class AboutPage {
     this.photourl = auth.user.photoURL;
   }
 
+  logout(){
+    this.auth.signOut().then(item => {
+      this.app.getRootNav().setRoot(LoginPage);
+    });
+  }
+
 }
